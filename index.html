@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f6f0ff">
+<meta name="description" content="Bloom 2.0 — a pastel JEE study and life command centre.">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Bloom 2.0">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/bloom-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/bloom-192.png">
+<title>Bloom 2.0 — JEE Command Centre</title>
+<style>
+:root{
+ --ink:#34324a;--muted:#85829b;--bg:#f7f5fb;--card:#fff;--line:#eeeaf5;
+ --lilac:#dcd0ff;--lilac2:#f0eaff;--pink:#ffd9e6;--peach:#ffe2cc;
+ --mint:#d4f2e4;--blue:#d9ebff;--yellow:#fff0bd;--lav:#b9a4f4;
+ --shadow:0 10px 28px rgba(67,54,105,.08);--radius:22px
+}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}
+.app{max-width:1200px;margin:auto;padding:18px 18px 100px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px 0 22px}
+.brand{display:flex;align-items:center;gap:11px}.logo{width:45px;height:45px;border-radius:16px;background:linear-gradient(135deg,#c9b8ff,#ffcddd);display:grid;place-items:center;font-size:23px;box-shadow:var(--shadow)}
+.brand h1{font-size:22px;margin:0;letter-spacing:-.7px}.brand small{color:var(--muted)}
+.header-actions{display:flex;gap:8px}.iconbtn,.btn{border-radius:13px;padding:10px 13px;background:white;color:var(--ink);box-shadow:0 3px 12px rgba(60,50,90,.06);font-weight:650}
+.btn.primary{background:#7561bd;color:white}.btn.soft{background:var(--lilac2);color:#6652a7}.btn.danger{background:#fff0f1;color:#b75c6c}
+.greeting{padding:23px;border-radius:26px;background:linear-gradient(115deg,#eee8ff,#ffeaf0 58%,#fff0d9);display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:17px}
+.greeting h2{font-size:clamp(22px,4vw,31px);letter-spacing:-1px;margin:0 0 5px}.greeting p{margin:0;color:#716d88}.datepill{background:#ffffffa8;padding:9px 13px;border-radius:14px;white-space:nowrap;font-weight:700;color:#6e6097}
+.nav{display:flex;gap:7px;overflow:auto;padding:4px 0 14px;scrollbar-width:none}.nav::-webkit-scrollbar{display:none}.nav button{white-space:nowrap;padding:10px 14px;border-radius:14px;background:#fff;color:#77728d;font-weight:700;border:1px solid var(--line)}.nav button.active{background:#7561bd;color:white;border-color:#7561bd}
+.page{display:none}.page.active{display:block}.grid{display:grid;gap:14px}.stats{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:14px}.two{grid-template-columns:1.2fr .8fr}.three{grid-template-columns:repeat(3,1fr)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);min-width:0}.card h3{margin:0 0 13px;font-size:16px;letter-spacing:-.2px}.stat{position:relative;overflow:hidden}.stat:after{content:"";position:absolute;width:75px;height:75px;border-radius:50%;right:-22px;top:-23px;background:var(--tint)}.stat .label{font-size:12px;color:var(--muted);font-weight:700}.stat strong{display:block;font-size:27px;margin:6px 0 1px;letter-spacing:-1px}.stat small{color:var(--muted)}.tint-l{--tint:var(--lilac)}.tint-p{--tint:var(--pink)}.tint-m{--tint:var(--mint)}.tint-y{--tint:var(--yellow)}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.muted{color:var(--muted)}.tiny{font-size:12px}.progress{height:10px;background:#f0edf6;border-radius:20px;overflow:hidden;margin:9px 0}.progress span{height:100%;display:block;border-radius:20px;background:linear-gradient(90deg,#b6a0f3,#f3aeca)}
+.subjects{display:grid;gap:13px}.subjectline{display:grid;grid-template-columns:75px 1fr 42px;gap:10px;align-items:center;font-size:13px}.subjectline .progress{margin:0}
+.quickgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.quick{padding:13px 8px;background:#faf8ff;border:1px solid var(--line);border-radius:16px;text-align:center;color:var(--ink);font-weight:700}.quick span{display:block;font-size:22px;margin-bottom:4px}.quick small{font-size:11px;color:var(--muted)}
+.list{display:grid;gap:9px}.item{padding:12px;border-radius:15px;background:#faf9fd;border:1px solid var(--line);display:flex;align-items:center;gap:10px}.item .grow{flex:1;min-width:0}.item b{display:block;font-size:14px}.item small{color:var(--muted)}.tag{font-size:11px;padding:5px 8px;border-radius:20px;background:var(--lilac2);color:#6d5ba5;font-weight:750}.empty{padding:22px;text-align:center;color:var(--muted);background:#faf9fd;border-radius:16px}
+.sectionhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0 14px}.sectionhead h2{margin:0;font-size:23px;letter-spacing:-.7px}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.field{display:grid;gap:5px}.field.full{grid-column:1/-1}.field label{font-size:12px;font-weight:750;color:#77728d}.field input,.field select,.field textarea{width:100%;padding:11px 12px;border:1px solid #e8e3f0;border-radius:12px;background:#fff;color:var(--ink);outline:none}.field textarea{min-height:85px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:#b7a5ec;box-shadow:0 0 0 3px #eee8ff}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:550px}th,td{text-align:left;padding:11px 9px;border-bottom:1px solid var(--line);font-size:13px}th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+.chip{padding:6px 9px;border-radius:10px;background:#f4f0fb;font-size:12px;font-weight:700}.checkrow{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid var(--line)}input[type=checkbox]{accent-color:#8872cf;width:18px;height:18px}
+canvas{width:100%;height:190px;display:block}.chartnote{font-size:11px;color:var(--muted);margin-top:3px}
+.timer{text-align:center;padding:12px}.timerface{font-size:54px;font-weight:800;letter-spacing:-2px;margin:7px}.timer-controls{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.calday{background:#faf9fd;border-radius:10px;min-height:52px;padding:7px;font-size:12px}.calday b{display:block}.calday.today{background:#eee8ff;outline:2px solid #bba9f1}.calday .dot{width:6px;height:6px;border-radius:50%;background:#9a85dc;display:inline-block;margin-top:5px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#39334e;color:white;padding:11px 17px;border-radius:13px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.25s;z-index:20}.toast.show{opacity:1}
+footer{text-align:center;color:var(--muted);font-size:11px;margin:24px 0}
+@media(max-width:800px){.stats{grid-template-columns:repeat(2,1fr)}.two,.three{grid-template-columns:1fr}.quickgrid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:480px){.app{padding:12px 12px 90px}.greeting{padding:18px;display:block}.datepill{display:inline-block;margin-top:13px}.card{padding:15px}.stats{gap:9px}.stat strong{font-size:23px}.quickgrid{grid-template-columns:repeat(2,1fr)}.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}.sectionhead h2{font-size:21px}.header-actions .btn{padding:9px}.brand h1{font-size:19px}}
+
+.insight-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow)}
+.insight-card strong{display:block;font-size:25px;margin:6px 0}
+.revision-due{border-left:4px solid #b9a4f4}
+.daygroup{padding:12px 0;border-bottom:1px solid var(--line)}
+.daygroup:last-child{border:0}
+@media(max-width:600px){.app{padding:12px 12px 80px}.card{padding:14px}.nav button{padding:9px 11px;font-size:13px}.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+ <div class="brand"><div class="logo">🌷</div><div><h1>Bloom</h1><small>Your JEE + life command centre</small></div></div>
+ <div class="header-actions"><button class="btn soft" id="installBtn" hidden>＋ Install</button><button class="iconbtn" onclick="exportData()" title="Backup">⬇️</button><button class="iconbtn" onclick="document.getElementById('importFile').click()" title="Restore">⬆️</button><input id="importFile" type="file" accept="application/json" hidden onchange="importData(event)"></div>
+</header>
+<div class="greeting"><div><h2 id="hello">A little progress blooms 🌱</h2><p id="quote">Consistency beats occasional perfection. Keep showing up.</p></div><div class="datepill" id="todayDate"></div></div>
+<nav class="nav" id="nav">
+<button class="active" data-page="home">🏡 Overview</button><button data-page="daily">📝 Daily log</button><button data-page="study">📚 Study hub</button><button data-page="chapters">🧩 Chapters</button><button data-page="tests">🎯 Tests</button><button data-page="habits">🌿 Habits</button><button data-page="money">💸 Money</button><button data-page="wellbeing">🫧 Wellbeing</button><button data-page="journal">📓 Journal</button><button data-page="calendar">🗓️ Calendar</button><button data-page="sessions">⏱️ Sessions</button><button data-page="revision">🔁 Revision</button><button data-page="goals">🏁 Goals</button><button data-page="insights">🧠 Insights</button><button data-page="timetable">📅 Timetable</button>
+</nav>
+<main>
+<section class="page active" id="home">
+ <div class="grid stats">
+  <div class="card stat tint-l"><div class="label">STUDY THIS MONTH</div><strong id="sStudy">0h</strong><small id="sStudySub">Your effort adds up</small></div>
+  <div class="card stat tint-m"><div class="label">CURRENT STREAK</div><strong id="sStreak">0 days</strong><small>Days with study logged</small></div>
+  <div class="card stat tint-p"><div class="label">CHAPTERS DONE</div><strong id="sChapters">0%</strong><small id="sChapterSub">0 of 0 completed</small></div>
+  <div class="card stat tint-y"><div class="label">SLEEP AVG</div><strong id="sSleep">—</strong><small>Logged nights</small></div>
+ </div>
+ <div class="grid two">
+  <div class="card"><div class="row"><h3>Subject balance</h3><span class="tag">This month</span></div><div class="subjects" id="subjectBars"></div></div>
+  <div class="card"><div class="row"><h3>Today's snapshot</h3><span class="tag" id="todayStatus">Not logged</span></div><div class="quickgrid">
+   <button class="quick" onclick="go('daily')"><span>📝</span>Daily log<small>Record today</small></button><button class="quick" onclick="go('study')"><span>⏱️</span>Focus timer<small>Start a session</small></button><button class="quick" onclick="go('chapters')"><span>🧩</span>Backlog<small>Clear chapters</small></button><button class="quick" onclick="go('journal')"><span>✍️</span>Journal<small>Brain dump</small></button>
+  </div><div style="margin-top:16px" class="row"><span class="muted tiny">Today's focused study</span><b id="todayHours">0h</b></div><div class="progress"><span id="todayProgress" style="width:0%"></span></div><small class="muted">Daily target: <span id="targetLabel">5</span> hours</small></div>
+ </div>
+ <div class="grid two" style="margin-top:14px">
+  <div class="card"><h3>Study rhythm · last 7 days</h3><canvas id="studyChart" width="600" height="220"></canvas><div class="chartnote">Hours recorded in your daily log.</div></div>
+  <div class="card"><h3>Next up</h3><div class="list" id="upcomingList"></div><div class="actions"><button class="btn soft" onclick="go('study')">Open study hub →</button></div></div>
+ </div>
+ <div class="card" style="margin-top:14px"><div class="row"><h3>Little wins</h3><span class="tag">Your milestones</span></div><div class="quickgrid" id="wins"></div></div>
+</section>
+
+<section class="page" id="daily">
+ <div class="sectionhead"><h2>Daily log 🌼</h2><span class="tag" id="logDateTag"></span></div>
+ <div class="grid two">
+  <div class="card"><h3>Make today count</h3><div class="formgrid">
+   <div class="field"><label>Date</label><input type="date" id="dDate"></div>
+   <div class="field"><label>Coaching attendance</label><select id="dCoach"><option>Attended</option><option>Missed</option><option>No class</option></select></div>
+   <div class="field"><label>Physics (hours)</label><input type="number" min="0" step=".25" id="dPhy" placeholder="0"></div>
+   <div class="field"><label>Chemistry (hours)</label><input type="number" min="0" step=".25" id="dChem" placeholder="0"></div>
+   <div class="field"><label>Maths (hours)</label><input type="number" min="0" step=".25" id="dMath" placeholder="0"></div>
+   <div class="field"><label>Other study (hours)</label><input type="number" min="0" step=".25" id="dOther" placeholder="0"></div>
+   <div class="field"><label>Question practice (minutes)</label><input type="number" min="0" id="dQuestions" placeholder="0"></div>
+   <div class="field"><label>Revision (minutes)</label><input type="number" min="0" id="dRevision" placeholder="0"></div>
+   <div class="field"><label>Sleep last night (hours)</label><input type="number" min="0" max="24" step=".25" id="dSleep" placeholder="8"></div>
+   <div class="field"><label>Bedtime</label><input type="time" id="dBed"></div>
+   <div class="field"><label>Wake-up time</label><input type="time" id="dWake"></div>
+   <div class="field"><label>Screen time (hours)</label><input type="number" min="0" max="24" step=".25" id="dScreen" placeholder="0"></div>
+   <div class="field"><label>Exercise / walk (minutes)</label><input type="number" min="0" id="dExercise" placeholder="0"></div>
+   <div class="field"><label>Money spent (₹)</label><input type="number" min="0" step=".5" id="dSpend" placeholder="0"></div>
+   <div class="field"><label>Mood</label><select id="dMood"><option value="">Choose</option><option>1 · Low</option><option>2 · Meh</option><option>3 · Okay</option><option>4 · Good</option><option>5 · Great</option></select></div>
+   <div class="field"><label>Energy</label><select id="dEnergy"><option value="">Choose</option><option>Low</option><option>Medium</option><option>High</option></select></div>
+   <div class="field full"><label>Top priority for today</label><input id="dPriority" placeholder="e.g. Finish vectors examples"></div>
+   <div class="field full"><label>Reflection / notes</label><textarea id="dNotes" placeholder="What went well? What got in the way?"></textarea></div>
+  </div><div class="actions"><button class="btn primary" onclick="saveDaily()">Save daily log ✨</button><button class="btn" onclick="clearDaily()">Clear form</button></div></div>
+  <div class="card"><h3>Daily checklist</h3><p class="muted tiny">Tick what you completed. These reset for each date.</p><div id="dailyChecks"></div><div class="progress"><span id="checkProgress" style="width:0%"></span></div><small class="muted" id="checkText">0 / 8 complete</small><hr style="border:0;border-top:1px solid var(--line);margin:16px 0"><h3>Recent entries</h3><div class="list" id="recentLogs"></div></div>
+ </div>
+</section>
+
+<section class="page" id="study">
+ <div class="sectionhead"><h2>Study hub 📚</h2><span class="tag">Plan · focus · reflect</span></div>
+ <div class="grid two">
+  <div class="card"><h3>Pomodoro focus room</h3><div class="timer"><div class="muted tiny" id="timerMode">FOCUS SESSION</div><div class="timerface" id="timerFace">25:00</div><div class="timer-controls"><button class="btn primary" id="timerStart" onclick="toggleTimer()">Start focus</button><button class="btn" onclick="resetTimer()">Reset</button><button class="btn soft" onclick="setTimer(5)">5 min break</button><button class="btn soft" onclick="setTimer(25)">25 min</button><button class="btn soft" onclick="setTimer(50)">50 min</button></div><p class="muted tiny" id="timerHint">One focused session at a time. You can do this.</p></div></div>
+  <div class="card"><h3>Add a study task</h3><div class="formgrid"><div class="field full"><label>Task / topic</label><input id="taskName" placeholder="e.g. NLM — friction questions"></div><div class="field"><label>Subject</label><select id="taskSubject"><option>Physics</option><option>Chemistry</option><option>Maths</option><option>Other</option></select></div><div class="field"><label>Priority</label><select id="taskPriority"><option>High</option><option>Medium</option><option>Low</option></select></div><div class="field"><label>Due date</label><input id="taskDue" type="date"></div><div class="field"><label>Estimated minutes</label><input id="taskMinutes" type="number" min="5" value="45"></div></div><div class="actions"><button class="btn primary" onclick="addTask()">Add to plan +</button></div></div>
+ </div>
+ <div class="grid two" style="margin-top:14px"><div class="card"><div class="row"><h3>Task board</h3><span class="tag" id="taskCount">0 tasks</span></div><div class="list" id="taskList"></div></div><div class="card"><h3>Study strategy</h3><div class="list"><div class="item"><span>🧠</span><div class="grow"><b>Active recall</b><small>Close the notes and retrieve ideas from memory.</small></div></div><div class="item"><span>✍️</span><div class="grow"><b>Question practice</b><small>Track attempts separately from lecture time.</small></div></div><div class="item"><span>🔁</span><div class="grow"><b>Spaced revision</b><small>Revisit topics after 1, 3, 7 and 14 days.</small></div></div><div class="item"><span>🧪</span><div class="grow"><b>Error log</b><small>Record why each test question went wrong.</small></div></div></div></div></div>
+</section>
+
+<section class="page" id="chapters">
+ <div class="sectionhead"><h2>Backlog & chapters 🧩</h2><button class="btn soft" onclick="seedChapters()">＋ Load Class 11 starter list</button></div>
+ <div class="grid stats"><div class="card stat tint-l"><div class="label">TOTAL CHAPTERS</div><strong id="chTotal">0</strong><small>Across all subjects</small></div><div class="card stat tint-m"><div class="label">COMPLETED</div><strong id="chDone">0</strong><small>Marked complete</small></div><div class="card stat tint-p"><div class="label">IN PROGRESS</div><strong id="chProgress">0</strong><small>Currently studying</small></div><div class="card stat tint-y"><div class="label">BACKLOG LEFT</div><strong id="chLeft">0</strong><small>Not completed</small></div></div>
+ <div class="grid two"><div class="card"><h3>Add chapter / topic</h3><div class="formgrid"><div class="field"><label>Chapter name</label><input id="chName" placeholder="e.g. Laws of Motion"></div><div class="field"><label>Subject</label><select id="chSubject"><option>Physics</option><option>Chemistry</option><option>Maths</option></select></div><div class="field"><label>Status</label><select id="chStatus"><option>Not started</option><option>In progress</option><option>Revising</option><option>Completed</option></select></div><div class="field"><label>Confidence (1–5)</label><select id="chConfidence"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div><div class="field full"><label>Next action</label><input id="chNext" placeholder="e.g. Solve 25 module questions"></div></div><div class="actions"><button class="btn primary" onclick="addChapter()">Add chapter</button></div></div><div class="card"><h3>Chapter progress</h3><div class="subjects" id="chapterBars"></div></div></div>
+ <div class="card" style="margin-top:14px"><div class="row"><h3>Your chapters</h3><select id="chFilter" onchange="renderChapters()" style="padding:8px;border:1px solid var(--line);border-radius:10px"><option>All</option><option>Physics</option><option>Chemistry</option><option>Maths</option></select></div><div class="list" id="chapterList"></div></div>
+</section>
+
+<section class="page" id="tests">
+ <div class="sectionhead"><h2>Test centre 🎯</h2><span class="tag">Analyse, don't just score</span></div>
+ <div class="grid stats"><div class="card stat tint-l"><div class="label">TESTS TAKEN</div><strong id="testTotal">0</strong><small>Logged tests</small></div><div class="card stat tint-m"><div class="label">AVERAGE SCORE</div><strong id="testAvg">—</strong><small>Percentage</small></div><div class="card stat tint-p"><div class="label">BEST SCORE</div><strong id="testBest">—</strong><small>Percentage</small></div><div class="card stat tint-y"><div class="label">AVG ACCURACY</div><strong id="testAccuracy">—</strong><small>Correct / attempted</small></div></div>
+ <div class="grid two"><div class="card"><h3>Log a test</h3><div class="formgrid"><div class="field"><label>Test name</label><input id="testName" placeholder="Chapter test / mock"></div><div class="field"><label>Date</label><input id="testDate" type="date"></div><div class="field"><label>Subject</label><select id="testSubject"><option>Full syllabus</option><option>Physics</option><option>Chemistry</option><option>Maths</option></select></div><div class="field"><label>Score</label><input id="testScore" type="number" placeholder="e.g. 120"></div><div class="field"><label>Maximum marks</label><input id="testMax" type="number" placeholder="e.g. 300"></div><div class="field"><label>Attempted questions</label><input id="testAttempt" type="number" min="0"></div><div class="field"><label>Correct answers</label><input id="testCorrect" type="number" min="0"></div><div class="field"><label>Time spent (minutes)</label><input id="testTime" type="number" min="0"></div><div class="field full"><label>Main lesson / mistake pattern</label><textarea id="testNotes" placeholder="Concept gap, calculation error, time management..."></textarea></div></div><div class="actions"><button class="btn primary" onclick="addTest()">Save test</button></div></div><div class="card"><h3>Test history</h3><div class="list" id="testList"></div></div></div>
+ <div class="card" style="margin-top:14px"><h3>After-test review checklist</h3><div id="testReview"></div></div>
+</section>
+
+<section class="page" id="habits">
+ <div class="sectionhead"><h2>Habit garden 🌿</h2><span class="tag">Build consistency gently</span></div>
+ <div class="grid two"><div class="card"><h3>Create a habit</h3><div class="formgrid"><div class="field"><label>Habit name</label><input id="habitName" placeholder="e.g. 20 min revision"></div><div class="field"><label>Category</label><select id="habitCat"><option>Study</option><option>Health</option><option>Personal</option><option>Digital wellbeing</option></select></div><div class="field"><label>Daily target</label><input id="habitTarget" placeholder="e.g. 20 minutes"></div></div><div class="actions"><button class="btn primary" onclick="addHabit()">Plant habit 🌱</button><button class="btn soft" onclick="defaultHabits()">Add starter habits</button></div></div><div class="card"><h3>Today's habits</h3><div id="habitToday"></div><div class="progress"><span id="habitProgress" style="width:0%"></span></div><small class="muted" id="habitProgressText"></small></div></div>
+ <div class="card" style="margin-top:14px"><h3>All habits · weekly view</h3><div id="habitList"></div></div>
+</section>
+
+<section class="page" id="money">
+ <div class="sectionhead"><h2>Money & spending 💸</h2><span class="tag">Know where it goes</span></div>
+ <div class="grid stats"><div class="card stat tint-l"><div class="label">THIS MONTH</div><strong id="moneyTotal">₹0</strong><small>Total spending</small></div><div class="card stat tint-m"><div class="label">DAILY AVERAGE</div><strong id="moneyAvg">₹0</strong><small>Per calendar day</small></div><div class="card stat tint-p"><div class="label">BIGGEST CATEGORY</div><strong id="moneyTop">—</strong><small>Most spent on</small></div><div class="card stat tint-y"><div class="label">BUDGET LEFT</div><strong id="moneyLeft">—</strong><small>Against your budget</small></div></div>
+ <div class="grid two"><div class="card"><h3>Add an expense</h3><div class="formgrid"><div class="field"><label>What did you buy?</label><input id="expenseName" placeholder="e.g. Snacks"></div><div class="field"><label>Amount (₹)</label><input id="expenseAmount" type="number" min="0" step=".5"></div><div class="field"><label>Category</label><select id="expenseCat"><option>Food</option><option>Travel</option><option>Study</option><option>Personal</option><option>Entertainment</option><option>Other</option></select></div><div class="field"><label>Date</label><input id="expenseDate" type="date"></div><div class="field"><label>Need or want?</label><select id="expenseNeed"><option>Need</option><option>Want</option></select></div></div><div class="actions"><button class="btn primary" onclick="addExpense()">Add expense</button></div></div><div class="card"><h3>Monthly budget</h3><div class="field"><label>Budget limit (₹)</label><input id="budgetInput" type="number" min="0" placeholder="Set a monthly budget" onchange="saveBudget()"></div><div class="progress"><span id="budgetBar" style="width:0%"></span></div><small class="muted" id="budgetText">Set a budget to track your spending.</small><hr style="border:0;border-top:1px solid var(--line);margin:15px 0"><h3>Spending by category</h3><div id="spendCats"></div></div></div>
+ <div class="card" style="margin-top:14px"><h3>Expense history</h3><div class="list" id="expenseList"></div></div>
+</section>
+
+<section class="page" id="wellbeing">
+ <div class="sectionhead"><h2>Wellbeing studio 🫧</h2><span class="tag">Energy is part of the plan</span></div>
+ <div class="grid two"><div class="card"><h3>Screen-time check-in</h3><p class="muted tiny">Log your total screen time in Daily Log. This panel helps you notice patterns without guilt.</p><div class="row"><span>Today's screen time</span><b id="screenToday">—</b></div><div class="progress"><span id="screenBar" style="width:0%"></span></div><div class="row"><span class="muted tiny">7-day average</span><b id="screenAvg">—</b></div><div class="actions"><button class="btn soft" onclick="go('daily')">Update daily log</button></div></div><div class="card"><h3>Sleep check-in</h3><div class="row"><span>Last logged sleep</span><b id="sleepToday">—</b></div><div class="row" style="margin-top:12px"><span>7-day average</span><b id="sleepAvg">—</b></div><p class="muted tiny">For teens, regular and sufficient sleep supports learning, mood and recovery. Use the log to spot patterns, not to chase a perfect number.</p></div></div>
+ <div class="grid two" style="margin-top:14px"><div class="card"><h3>Quick reset</h3><div class="list"><div class="item"><span>🌬️</span><div class="grow"><b>One-minute breathing pause</b><small>Relax your shoulders and breathe slowly.</small></div><button class="btn soft" onclick="startBreath()">Start</button></div><div class="item"><span>🚶</span><div class="grow"><b>Movement break</b><small>Stand, stretch or take a short walk.</small></div><button class="btn soft" onclick="toast('Movement break: take a few comfortable minutes.')">Go</button></div><div class="item"><span>🧹</span><div class="grow"><b>Reset your desk</b><small>Clear one small area before the next session.</small></div><button class="btn soft" onclick="toast('Tiny reset. One surface is enough!')">Done</button></div></div><div id="breathText" class="muted tiny" style="margin-top:10px"></div></div><div class="card"><h3>Personal wellbeing notes</h3><div class="field"><label>What is affecting my energy?</label><textarea id="wellNote" placeholder="Sleep, workload, stress, environment..."></textarea></div><div class="actions"><button class="btn primary" onclick="saveWellNote()">Save note</button></div><p class="muted tiny">This is a private reflection space stored in this browser.</p></div></div>
+</section>
+
+<section class="page" id="journal">
+ <div class="sectionhead"><h2>Journal & brain dump 📓</h2><span class="tag">Clear your head</span></div>
+ <div class="grid two"><div class="card"><h3>New journal entry</h3><div class="formgrid"><div class="field"><label>Date</label><input id="jDate" type="date"></div><div class="field"><label>Entry type</label><select id="jType"><option>Daily reflection</option><option>Brain dump</option><option>Gratitude</option><option>Lesson learned</option><option>Idea</option></select></div><div class="field full"><label>Title</label><input id="jTitle" placeholder="A thought worth keeping"></div><div class="field full"><label>Write freely</label><textarea id="jBody" style="min-height:170px" placeholder="No need to make it sound perfect..."></textarea></div></div><div class="actions"><button class="btn primary" onclick="addJournal()">Save entry</button></div></div><div class="card"><h3>Prompts when you're stuck</h3><div class="list"><button class="item" onclick="promptJournal('What is one thing I understood better today?')">💡 What did I understand better today?</button><button class="item" onclick="promptJournal('What am I avoiding, and what is the smallest first step?')">🌱 What am I avoiding?</button><button class="item" onclick="promptJournal('What went well today, even if it was small?')">🌷 What went well?</button><button class="item" onclick="promptJournal('What do I want tomorrow to feel like?')">☀️ What do I want tomorrow to feel like?</button></div><h3 style="margin-top:18px">Saved entries</h3><div class="list" id="journalList"></div></div></div>
+</section>
+
+<section class="page" id="calendar">
+ <div class="sectionhead"><h2>Monthly calendar 🗓️</h2><div class="row"><button class="iconbtn" onclick="changeMonth(-1)">‹</button><b id="monthLabel"></b><button class="iconbtn" onclick="changeMonth(1)">›</button></div></div>
+ <div class="card"><div class="calendar" id="calendarGrid"></div><p class="muted tiny">Dots indicate days with a daily log. Select a day to open its entry.</p></div>
+ <div class="card" style="margin-top:14px"><h3>Month at a glance</h3><div class="grid three"><div><div class="muted tiny">Days logged</div><b id="calLogged">0</b></div><div><div class="muted tiny">Study hours</div><b id="calStudy">0h</b></div><div><div class="muted tiny">Expenses</div><b id="calSpend">₹0</b></div></div></div>
+</section>
+
+<section class="page" id="sessions">
+ <div class="sectionhead"><h2>Study sessions ⏱️</h2><span class="tag">Lecture ≠ practice</span></div>
+ <div class="grid two">
+  <div class="card"><h3>Log a focused session</h3><div class="formgrid">
+   <div class="field"><label>Date</label><input id="ssDate" type="date"></div>
+   <div class="field"><label>Subject</label><select id="ssSubject"><option>Physics</option><option>Chemistry</option><option>Maths</option><option>Other</option></select></div>
+   <div class="field"><label>Session type</label><select id="ssType"><option>Question practice</option><option>Lecture</option><option>Revision</option><option>Test analysis</option><option>Notes</option></select></div>
+   <div class="field"><label>Duration (minutes)</label><input id="ssMinutes" type="number" min="1" value="60"></div>
+   <div class="field full"><label>Chapter / topic</label><input id="ssChapter" placeholder="e.g. Laws of Motion — friction"></div>
+   <div class="field full"><label>What did you complete / learn?</label><textarea id="ssNotes" placeholder="Be specific: 18 questions, 12 correct, friction concepts revised..."></textarea></div>
+  </div><div class="actions"><button class="btn primary" onclick="addSession()">Save session</button></div></div>
+  <div class="card"><h3>Study mix this month</h3><div id="sessionMix"></div><hr style="border:0;border-top:1px solid var(--line);margin:15px 0"><div class="grid three"><div><small class="muted">Total time</small><h2 id="ssTotal">0h</h2></div><div><small class="muted">Practice</small><h2 id="ssPractice">0h</h2></div><div><small class="muted">Lectures</small><h2 id="ssLecture">0h</h2></div></div><p class="muted tiny">Track independent problem-solving separately from watching lectures. Both matter, but they are not interchangeable.</p></div>
+ </div>
+ <div class="card" style="margin-top:14px"><h3>Recent sessions</h3><div class="list" id="sessionList"></div></div>
+</section>
+<section class="page" id="revision">
+ <div class="sectionhead"><h2>Spaced revision 🔁</h2><span class="tag">1 · 3 · 7 · 14 · 30 days</span></div>
+ <div class="grid two">
+  <div class="card"><h3>Add a topic to revision</h3><div class="formgrid">
+   <div class="field full"><label>Chapter / topic</label><input id="rvName" placeholder="e.g. Mole Concept"></div>
+   <div class="field"><label>Subject</label><select id="rvSubject"><option>Physics</option><option>Chemistry</option><option>Maths</option></select></div>
+   <div class="field"><label>Last studied</label><input id="rvDate" type="date"></div>
+   <div class="field"><label>Confidence (1–5)</label><select id="rvConfidence"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+  </div><div class="actions"><button class="btn primary" onclick="addRevision()">Add revision plan</button></div></div>
+  <div class="card"><h3>Due now</h3><div id="revisionDue"></div><p class="muted tiny">After each revision, mark it complete to schedule the next interval. The sequence is 1, 3, 7, 14 and 30 days after the previous review.</p></div>
+ </div>
+ <div class="card" style="margin-top:14px"><h3>All revision topics</h3><div class="list" id="revisionList"></div></div>
+</section>
+<section class="page" id="goals">
+ <div class="sectionhead"><h2>Goals & milestones 🏁</h2><span class="tag">Small targets, consistent execution</span></div>
+ <div class="grid two">
+  <div class="card"><h3>Set your study targets</h3><div class="formgrid">
+   <div class="field"><label>Daily self-study target (hours)</label><input id="goalDaily" type="number" min="0.5" step=".5"></div>
+   <div class="field"><label>Weekly self-study target (hours)</label><input id="goalWeekly" type="number" min="1" step="1"></div>
+   <div class="field"><label>Monthly question target</label><input id="goalQuestions" type="number" min="0" step="10"></div>
+   <div class="field"><label>Monthly revision target (hours)</label><input id="goalRevision" type="number" min="0" step="1"></div>
+  </div><div class="actions"><button class="btn primary" onclick="saveGoals()">Save targets</button></div></div>
+  <div class="card"><h3>Progress this week</h3><div id="goalProgress"></div></div>
+ </div>
+ <div class="card" style="margin-top:14px"><h3>Milestones</h3><div class="list" id="milestones"></div></div>
+</section>
+<section class="page" id="insights">
+ <div class="sectionhead"><h2>Performance insights 🧠</h2><span class="tag">Based on your logs</span></div>
+ <div class="grid three" id="insightStats"></div>
+ <div class="grid two" style="margin-top:14px"><div class="card"><h3>What the data says</h3><div class="list" id="insightList"></div></div><div class="card"><h3>Subject balance</h3><div id="subjectBalance"></div><p class="muted tiny">Use this to notice neglected areas, not to force equal hours every day. Let your current syllabus and weak areas guide the split.</p></div></div>
+</section>
+<section class="page" id="timetable">
+ <div class="sectionhead"><h2>Weekly timetable 📅</h2><span class="tag">Plan around coaching</span></div>
+ <div class="grid two">
+  <div class="card"><h3>Add a time block</h3><div class="formgrid">
+   <div class="field"><label>Day</label><select id="tbDay"><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option></select></div>
+   <div class="field"><label>Activity</label><input id="tbName" placeholder="e.g. Physics practice"></div>
+   <div class="field"><label>Start time</label><input id="tbStart" type="time" value="17:00"></div>
+   <div class="field"><label>End time</label><input id="tbEnd" type="time" value="18:00"></div>
+   <div class="field"><label>Category</label><select id="tbCat"><option>Self-study</option><option>Coaching</option><option>Revision</option><option>Break</option><option>Personal</option></select></div>
+  </div><div class="actions"><button class="btn primary" onclick="addBlock()">Add time block</button></div></div>
+  <div class="card"><h3>Planning tip</h3><p class="muted">Keep your timetable realistic. Include meals, commute, rest and buffer time. A plan that survives an ordinary day is more useful than a perfect-looking schedule.</p><div class="chip">Suggested: plan 1–2 priority study blocks outside coaching</div></div>
+ </div>
+ <div class="card" style="margin-top:14px"><h3>Your weekly plan</h3><div id="timetableGrid"></div></div>
+</section>
+
+</main>
+<footer>Bloom 2.0 · Your data stays on this device. Export a backup regularly. 🌷<br><span class="tiny">Install: open this site in Chrome → menu ⋮ → Install app / Add to Home screen.</span></footer>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const $=id=>document.getElementById(id), today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
+const blank=()=>({daily:{},tasks:[],chapters:[],tests:[],habits:[],habitChecks:{},expenses:[],budget:0,journal:[],wellNote:"",target:5});
+let db;try{db=JSON.parse(localStorage.getItem('bloomJEE')||'null')||blank()}catch(e){db=blank()}
+function persist(){localStorage.setItem('bloomJEE',JSON.stringify(db))}
+function toast(msg){let t=$('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
+function go(p){document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id===p));document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===p));window.scrollTo({top:0,behavior:'smooth'});renderAll()}
+$('nav').addEventListener('click',e=>{let b=e.target.closest('button[data-page]');if(b)go(b.dataset.page)});
+function dateLabel(s){return new Date(s+'T12:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}
+function val(id){return $(id).value}
+function set(id,v){$(id).value=v??''}
+function dailyTotal(x){return ['phy','chem','math','other'].reduce((a,k)=>a+(+x[k]||0),0)}
+function monthLogs(){let m=today().slice(0,7);return Object.entries(db.daily).filter(([d])=>d.startsWith(m))}
+function sum(a){return a.reduce((x,y)=>x+(+y||0),0)}
+function renderHome(){
+ let logs=monthLogs(), hours=sum(logs.map(([d,x])=>dailyTotal(x))), sleeps=logs.map(([d,x])=>+x.sleep).filter(x=>x>0);
+ $('sStudy').textContent=hours.toFixed(1)+'h';$('sSleep').textContent=sleeps.length?(sum(sleeps)/sleeps.length).toFixed(1)+'h':'—';
+ let dates=Object.keys(db.daily).sort().reverse(), streak=0,dt=new Date();for(let i=0;i<366;i++){let k=localISO(dt);if(db.daily[k]&&dailyTotal(db.daily[k])>0){streak++;dt.setDate(dt.getDate()-1)}else if(i===0){dt.setDate(dt.getDate()-1);continue}else break}
+ $('sStreak').textContent=streak+' days';let done=db.chapters.filter(c=>c.status==='Completed').length;$('sChapters').textContent=(db.chapters.length?Math.round(done/db.chapters.length*100):0)+'%';$('sChapterSub').textContent=done+' of '+db.chapters.length+' completed';
+ $('subjectBars').innerHTML=['Physics','Chemistry','Maths'].map((s,i)=>{let k=['phy','chem','math'][i],n=sum(logs.map(([d,x])=>x[k]));return `<div class="subjectline"><b>${s}</b><div class="progress"><span style="width:${Math.min(100,n/Math.max(1,hours)*100)}%;background:${['#b6a0f3','#f2aec8','#8ed4b4'][i]}"></span></div><span>${n.toFixed(1)}h</span></div>`}).join('');
+ let t=db.daily[today()]||{},th=dailyTotal(t);$('todayHours').textContent=th.toFixed(1)+'h';$('todayProgress').style.width=Math.min(100,th/(db.target||5)*100)+'%';$('targetLabel').textContent=db.target||5;$('todayStatus').textContent=db.daily[today()]?'Logged':'Not logged';
+ let last7=[];for(let i=6;i>=0;i--){let d=new Date();d.setDate(d.getDate()-i);let k=d.toISOString().slice(0,10);last7.push({label:d.toLocaleDateString('en-IN',{weekday:'short'}),v:dailyTotal(db.daily[k]||{})})}drawBars('studyChart',last7);
+ let upcoming=db.tasks.filter(t=>!t.done).sort((a,b)=>(a.due||'9999').localeCompare(b.due||'9999')).slice(0,4);$('upcomingList').innerHTML=upcoming.length?upcoming.map(t=>`<div class="item"><span>${t.subject==='Physics'?'⚛️':t.subject==='Chemistry'?'🧪':t.subject==='Maths'?'📐':'📌'}</span><div class="grow"><b>${esc(t.name)}</b><small>${t.subject} · ${t.due||'No due date'}</small></div><span class="tag">${t.priority}</span></div>`).join(''):'<div class="empty">No pending tasks. Add one in Study Hub ✨</div>';
+ $('wins').innerHTML=[['🌱',streak+' day streak'],['📚',db.chapters.length+' chapters added'],['🎯',db.tests.length+' tests logged'],['✍️',db.journal.length+' reflections']].map(x=>`<div class="quick"><span>${x[0]}</span>${x[1]}</div>`).join('');
+}
+function drawBars(id,data){let c=$(id),ctx=c.getContext('2d'),w=c.width,h=c.height;ctx.clearRect(0,0,w,h);let max=Math.max(2,...data.map(x=>x.v));ctx.font='13px system-ui';data.forEach((d,i)=>{let x=42+i*77,bh=d.v/max*135;ctx.fillStyle='#f0edf6';roundRect(ctx,x,h-42-135,42,135,9);ctx.fill();ctx.fillStyle=['#bba8f2','#f3c2d4','#a9dfc8'][i%3];roundRect(ctx,x,h-42-bh,42,bh,9);ctx.fill();ctx.fillStyle='#77728d';ctx.textAlign='center';ctx.fillText(d.label,x+21,h-15);ctx.fillStyle='#514b67';ctx.fillText(d.v?d.v.toFixed(1):'0',x+21,h-49-bh)})}
+function roundRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.roundRect(x,y,w,h,r)}
+const checks=['Attend / review coaching','Independent question practice','Revise something old','Plan tomorrow','Drink water regularly','Move / walk a little','Keep phone away during focus','Write a short reflection'];
+function renderChecks(){let k=today(),a=db.checks?.[k]||[];$('dailyChecks').innerHTML=checks.map((c,i)=>`<label class="checkrow"><input type="checkbox" ${a.includes(i)?'checked':''} onchange="toggleCheck(${i},this.checked)"><span>${c}</span></label>`).join('');$('checkProgress').style.width=a.length/checks.length*100+'%';$('checkText').textContent=a.length+' / '+checks.length+' complete'}
+function toggleCheck(i,on){db.checks=db.checks||{};let a=db.checks[today()]||[];db.checks[today()]=on?[...new Set([...a,i])]:a.filter(x=>x!==i);persist();renderChecks()}
+function loadDaily(){let d=val('dDate')||today(),x=db.daily[d]||{};set('dCoach',x.coach||'Attended');['phy','chem','math','other','questions','revision','sleep','bed','wake','screen','exercise','spend','mood','energy','priority','notes'].forEach(k=>set('d'+k[0].toUpperCase()+k.slice(1),x[k]));$('logDateTag').textContent=dateLabel(d)}
+function saveDaily(){let d=val('dDate');if(!d)return toast('Choose a date first');let x={coach:val('dCoach')};['phy','chem','math','other','questions','revision','sleep','bed','wake','screen','exercise','spend','mood','energy','priority','notes'].forEach(k=>x[k]=val('d'+k[0].toUpperCase()+k.slice(1)));db.daily[d]=x;persist();toast('Daily log saved 🌷');renderAll()}
+function clearDaily(){['dPhy','dChem','dMath','dOther','dQuestions','dRevision','dSleep','dBed','dWake','dScreen','dExercise','dSpend','dMood','dEnergy','dPriority','dNotes'].forEach(k=>set(k,''));}
+function renderRecent(){let a=Object.entries(db.daily).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,5);$('recentLogs').innerHTML=a.length?a.map(([d,x])=>`<div class="item"><div class="grow"><b>${dateLabel(d)}</b><small>${dailyTotal(x).toFixed(1)} study h · ${x.coach||'—'}</small></div><button class="btn soft" onclick="editDaily('${d}')">Edit</button></div>`).join(''):'<div class="empty">Your daily entries will appear here.</div>'}
+function editDaily(d){set('dDate',d);loadDaily();go('daily')}
+function addTask(){let n=val('taskName').trim();if(!n)return toast('Add a task name');db.tasks.push({id:Date.now(),name:n,subject:val('taskSubject'),priority:val('taskPriority'),due:val('taskDue'),minutes:+val('taskMinutes')||45,done:false});persist();set('taskName','');renderAll();toast('Task added')}
+function renderTasks(){$('taskCount').textContent=db.tasks.filter(t=>!t.done).length+' pending';$('taskList').innerHTML=db.tasks.length?db.tasks.slice().reverse().map(t=>`<div class="item"><input type="checkbox" ${t.done?'checked':''} onchange="taskDone(${t.id},this.checked)"><div class="grow"><b style="${t.done?'text-decoration:line-through;opacity:.55':''}">${esc(t.name)}</b><small>${t.subject} · ${t.minutes} min · ${t.due||'No due date'}</small></div><span class="tag">${t.priority}</span><button class="iconbtn" onclick="removeItem('tasks',${t.id})">×</button></div>`).join(''):'<div class="empty">Add your next study task.</div>'}
+function taskDone(id,on){let t=db.tasks.find(x=>x.id===id);if(t)t.done=on;persist();renderAll()}
+function addChapter(){let n=val('chName').trim();if(!n)return toast('Enter a chapter name');db.chapters.push({id:Date.now(),name:n,subject:val('chSubject'),status:val('chStatus'),confidence:+val('chConfidence'),next:val('chNext')});persist();set('chName','');set('chNext','');renderAll();toast('Chapter added')}
+function seedChapters(){let starter={Physics:['Units and Measurements','Vectors','Motion in a Straight Line','Motion in a Plane','Laws of Motion','Work, Energy and Power','System of Particles','Rotational Motion','Gravitation','Mechanical Properties of Solids','Mechanical Properties of Fluids','Thermal Properties of Matter','Thermodynamics','Kinetic Theory','Oscillations','Waves'],Chemistry:['Some Basic Concepts of Chemistry','Structure of Atom','Classification of Elements','Chemical Bonding','States of Matter','Thermodynamics','Equilibrium','Redox Reactions','Hydrogen','s-Block Elements','p-Block Elements','Organic Chemistry Basics','Hydrocarbons','Environmental Chemistry'],Maths:['Sets','Relations and Functions','Trigonometric Functions','Complex Numbers','Linear Inequalities','Permutations and Combinations','Binomial Theorem','Sequences and Series','Straight Lines','Conic Sections','Introduction to 3D Geometry','Limits and Derivatives','Statistics','Probability']};let existing=new Set(db.chapters.map(c=>c.subject+'|'+c.name));Object.entries(starter).forEach(([s,arr])=>arr.forEach(n=>{if(!existing.has(s+'|'+n))db.chapters.push({id:Date.now()+Math.random(),name:n,subject:s,status:'Not started',confidence:1,next:''})}));persist();renderAll();toast('Starter chapters loaded — edit to match your syllabus')}
+function renderChapters(){let f=val('chFilter')||'All',a=db.chapters.filter(c=>f==='All'||c.subject===f),done=db.chapters.filter(c=>c.status==='Completed').length,prog=db.chapters.filter(c=>c.status==='In progress'||c.status==='Revising').length;$('chTotal').textContent=db.chapters.length;$('chDone').textContent=done;$('chProgress').textContent=prog;$('chLeft').textContent=db.chapters.length-done;$('chapterBars').innerHTML=['Physics','Chemistry','Maths'].map(s=>{let z=db.chapters.filter(c=>c.subject===s),d=z.filter(c=>c.status==='Completed').length;return `<div><div class="row"><b>${s}</b><small>${d}/${z.length}</small></div><div class="progress"><span style="width:${z.length?d/z.length*100:0}%"></span></div></div>`}).join('');$('chapterList').innerHTML=a.length?a.map(c=>`<div class="item"><div class="grow"><b>${esc(c.name)}</b><small>${c.subject} · Confidence ${c.confidence}/5${c.next?' · Next: '+esc(c.next):''}</small></div><select onchange="chapterStatus(${c.id},this.value)" style="max-width:125px;padding:7px;border:1px solid var(--line);border-radius:10px;font-size:12px">${['Not started','In progress','Revising','Completed'].map(s=>`<option ${s===c.status?'selected':''}>${s}</option>`).join('')}</select><button class="iconbtn" onclick="removeItem('chapters',${c.id})">×</button></div>`).join(''):'<div class="empty">No chapters yet. Add one or load the starter list.</div>'}
+function chapterStatus(id,s){let c=db.chapters.find(x=>x.id===id);if(c)c.status=s;persist();renderAll()}
+function addTest(){let n=val('testName').trim(),score=+val('testScore'),max=+val('testMax');if(!n||!max||score<0)return toast('Enter test name, score and maximum marks');db.tests.push({id:Date.now(),name:n,date:val('testDate')||today(),subject:val('testSubject'),score,max,attempt:+val('testAttempt')||0,correct:+val('testCorrect')||0,time:+val('testTime')||0,notes:val('testNotes')});persist();set('testName','');set('testNotes','');renderAll();toast('Test saved. Review the mistakes, too.')}
+function renderTests(){let a=db.tests,avg=a.length?sum(a.map(t=>t.score/t.max*100))/a.length:0,best=a.length?Math.max(...a.map(t=>t.score/t.max*100)):0,att=sum(a.map(t=>t.attempt)),cor=sum(a.map(t=>t.correct));$('testTotal').textContent=a.length;$('testAvg').textContent=a.length?avg.toFixed(1)+'%':'—';$('testBest').textContent=a.length?best.toFixed(1)+'%':'—';$('testAccuracy').textContent=att?(cor/att*100).toFixed(1)+'%':'—';$('testList').innerHTML=a.length?a.slice().reverse().map(t=>`<div class="item"><div class="grow"><b>${esc(t.name)}</b><small>${dateLabel(t.date)} · ${t.subject}</small></div><span class="tag">${(t.score/t.max*100).toFixed(1)}%</span><button class="iconbtn" onclick="removeItem('tests',${t.id})">×</button></div>`).join(''):'<div class="empty">Your test history will build here.</div>'}
+const review=['Reattempt incorrect questions without looking at solutions','Classify errors: concept / calculation / silly / time','Write 2–3 concepts to revise','Choose one change for the next test'];
+function renderTestReview(){$('testReview').innerHTML=review.map((x,i)=>`<label class="checkrow"><input type="checkbox"><span>${x}</span></label>`).join('')}
+function addHabit(){let n=val('habitName').trim();if(!n)return toast('Name your habit');db.habits.push({id:Date.now(),name:n,cat:val('habitCat'),target:val('habitTarget')});persist();set('habitName','');renderAll();toast('Habit planted 🌱')}
+function defaultHabits(){[['Question practice','Study','30 min'],['Revise old topic','Study','20 min'],['Walk / movement','Health','20 min'],['Phone-free focus block','Digital wellbeing','1 block'],['Plan tomorrow','Personal','5 min']].forEach(([name,cat,target])=>{if(!db.habits.some(h=>h.name===name))db.habits.push({id:Date.now()+Math.random(),name,cat,target})});persist();renderAll();toast('Starter habits added')}
+function habitToggle(id,on){db.habitChecks=db.habitChecks||{};db.habitChecks[today()]=db.habitChecks[today()]||[];let a=db.habitChecks[today()];db.habitChecks[today()]=on?[...new Set([...a,id])]:a.filter(x=>x!==id);persist();renderHabits()}
+function renderHabits(){let a=db.habits,done=db.habitChecks?.[today()]||[];$('habitToday').innerHTML=a.length?a.map(h=>`<label class="checkrow"><input type="checkbox" ${done.includes(h.id)?'checked':''} onchange="habitToggle(${h.id},this.checked)"><span style="flex:1"><b>${esc(h.name)}</b><small class="muted"> · ${h.target||h.cat}</small></span><span class="tag">${h.cat}</span></label>`).join(''):'<div class="empty">Plant your first habit.</div>';$('habitProgress').style.width=(a.length?done.filter(x=>a.some(h=>h.id===x)).length/a.length*100:0)+'%';$('habitProgressText').textContent=done.filter(x=>a.some(h=>h.id===x)).length+' / '+a.length+' completed today';$('habitList').innerHTML=a.length?a.map(h=>`<div class="item"><div class="grow"><b>${esc(h.name)}</b><small>${h.cat} · ${h.target||'No target'}</small></div><button class="iconbtn" onclick="removeItem('habits',${h.id})">×</button></div>`).join(''):'<div class="empty">No habits yet.</div>'}
+function addExpense(){let n=val('expenseName').trim(),a=+val('expenseAmount');if(!n||!a)return toast('Enter an item and amount');db.expenses.push({id:Date.now(),name:n,amount:a,cat:val('expenseCat'),date:val('expenseDate')||today(),need:val('expenseNeed')});persist();set('expenseName','');set('expenseAmount','');renderAll();toast('Expense added')}
+function saveBudget(){db.budget=+val('budgetInput')||0;persist();renderMoney()}
+function renderMoney(){let m=today().slice(0,7),a=db.expenses.filter(x=>x.date.startsWith(m)),total=sum(a.map(x=>x.amount)),cats={};a.forEach(x=>cats[x.cat]=(cats[x.cat]||0)+x.amount);let top=Object.entries(cats).sort((a,b)=>b[1]-a[1])[0];$('moneyTotal').textContent='₹'+total.toFixed(0);$('moneyAvg').textContent='₹'+(total/Math.max(1,new Date().getDate())).toFixed(0);$('moneyTop').textContent=top?top[0]:'—';$('moneyLeft').textContent=db.budget?'₹'+(db.budget-total).toFixed(0):'—';set('budgetInput',db.budget||'');$('budgetBar').style.width=db.budget?Math.min(100,total/db.budget*100)+'%':'0%';$('budgetText').textContent=db.budget?`₹${total.toFixed(0)} spent of ₹${db.budget}.`:'Set a budget to track your spending.';$('spendCats').innerHTML=Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="row" style="margin:9px 0"><span>${k}</span><b>₹${v.toFixed(0)}</b></div><div class="progress"><span style="width:${total?v/total*100:0}%"></span></div>`).join('')||'<div class="empty">No spending logged this month.</div>';$('expenseList').innerHTML=db.expenses.length?db.expenses.slice().reverse().slice(0,30).map(x=>`<div class="item"><span>${x.need==='Need'?'🧾':'🛍️'}</span><div class="grow"><b>${esc(x.name)}</b><small>${dateLabel(x.date)} · ${x.cat} · ${x.need}</small></div><b>₹${x.amount}</b><button class="iconbtn" onclick="removeItem('expenses',${x.id})">×</button></div>`).join(''):'<div class="empty">Your expense history appears here.</div>'}
+function renderWell(){let logs=Object.entries(db.daily).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,7),t=db.daily[today()]||{},scr=+t.screen||0,ss=logs.map(x=>+x[1].screen).filter(x=>x>0),sl=logs.map(x=>+x[1].sleep).filter(x=>x>0);$('screenToday').textContent=t.screen?t.screen+'h':'Not logged';$('screenBar').style.width=Math.min(100,scr/12*100)+'%';$('screenAvg').textContent=ss.length?(sum(ss)/ss.length).toFixed(1)+'h':'—';$('sleepToday').textContent=t.sleep?t.sleep+'h':'Not logged';$('sleepAvg').textContent=sl.length?(sum(sl)/sl.length).toFixed(1)+'h':'—';set('wellNote',db.wellNote||'')}
+function saveWellNote(){db.wellNote=val('wellNote');persist();toast('Note saved')}
+let breathInterval;function startBreath(){let n=0,seq=['Breathe in gently','Breathe out slowly'];clearInterval(breathInterval);$('breathText').textContent=seq[0];breathInterval=setInterval(()=>{$('breathText').textContent=seq[n++%2];if(n>=10){clearInterval(breathInterval);$('breathText').textContent='One minute complete. Return when ready.'}},6000)}
+function addJournal(){let body=val('jBody').trim();if(!body)return toast('Write a few words first');db.journal.push({id:Date.now(),date:val('jDate')||today(),type:val('jType'),title:val('jTitle')||'Untitled entry',body});persist();set('jBody','');set('jTitle','');renderAll();toast('Entry saved 📓')}
+function promptJournal(s){set('jBody',s+'\n\n');$('jBody').focus()}
+function renderJournal(){$('journalList').innerHTML=db.journal.length?db.journal.slice().reverse().map(x=>`<div class="item"><div class="grow"><b>${esc(x.title)}</b><small>${dateLabel(x.date)} · ${x.type}</small></div><button class="btn soft" onclick="viewJournal(${x.id})">Read</button><button class="iconbtn" onclick="removeItem('journal',${x.id})">×</button></div>`).join(''):'<div class="empty">Your thoughts, saved in one place.</div>'}
+function viewJournal(id){let x=db.journal.find(j=>j.id===id);if(x)alert(x.title+'\\n'+dateLabel(x.date)+' · '+x.type+'\\n\\n'+x.body)}
+function renderCalendar(){let d=new Date(calYear,calMonth,1),first=d.getDay(),days=new Date(calYear,calMonth+1,0).getDate();$('monthLabel').textContent=d.toLocaleDateString('en-IN',{month:'long',year:'numeric'});let html=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(x=>`<div class="muted tiny" style="text-align:center;padding:7px">${x}</div>`).join('');for(let i=0;i<first;i++)html+='<div></div>';for(let n=1;n<=days;n++){let k=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(n).padStart(2,'0')}`,has=!!db.daily[k];html+=`<button class="calday ${k===today()?'today':''}" onclick="set('dDate','${k}');loadDaily();go('daily')"><b>${n}</b>${has?'<span class="dot"></span>':''}</button>`}$('calendarGrid').innerHTML=html;let month=String(calMonth+1).padStart(2,'0'),prefix=`${calYear}-${month}`,logs=Object.entries(db.daily).filter(([k])=>k.startsWith(prefix)),ex=db.expenses.filter(x=>x.date.startsWith(prefix));$('calLogged').textContent=logs.length;$('calStudy').textContent=sum(logs.map(([k,x])=>dailyTotal(x))).toFixed(1)+'h';$('calSpend').textContent='₹'+sum(ex.map(x=>x.amount)).toFixed(0)}
+let calYear=new Date().getFullYear(),calMonth=new Date().getMonth();function changeMonth(n){calMonth+=n;if(calMonth<0){calMonth=11;calYear--}if(calMonth>11){calMonth=0;calYear++}renderCalendar()}
+function removeItem(key,id){if(!confirm('Delete this entry?'))return;db[key]=db[key].filter(x=>x.id!==id);persist();renderAll();toast('Deleted')}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function renderAll(){renderHome();renderChecks();renderRecent();renderTasks();renderChapters();renderTests();renderTestReview();renderHabits();renderMoney();renderWell();renderJournal();renderCalendar()}
+function exportData(){let blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='bloom-jee-backup-'+today()+'.json';a.click();URL.revokeObjectURL(a.href);toast('Backup downloaded')}
+function importData(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!x.daily||!x.tasks)throw Error();db={...blank(),...x};persist();renderAll();toast('Backup restored')}catch(err){toast('That backup file could not be read')}};r.readAsText(f);e.target.value=''}
+let timerSeconds=25*60,timerRunning=false,timerInterval=null;function updateTimer(){$('timerFace').textContent=String(Math.floor(timerSeconds/60)).padStart(2,'0')+':'+String(timerSeconds%60).padStart(2,'0')}
+function setTimer(m){clearInterval(timerInterval);timerRunning=false;timerSeconds=m*60;$('timerStart').textContent='Start focus';$('timerMode').textContent=m===5?'SHORT BREAK':'FOCUS SESSION';updateTimer()}
+function toggleTimer(){if(timerRunning){clearInterval(timerInterval);timerRunning=false;$('timerStart').textContent='Resume';return}timerRunning=true;$('timerStart').textContent='Pause';timerInterval=setInterval(()=>{timerSeconds--;updateTimer();if(timerSeconds<=0){clearInterval(timerInterval);timerRunning=false;$('timerStart').textContent='Start focus';$('timerHint').textContent='Session complete. Take a short break!';toast('Focus session complete 🎉');if(navigator.vibrate)navigator.vibrate([150,80,150])}},1000)}
+function resetTimer(){setTimer(25);$('timerHint').textContent='One focused session at a time. You can do this.'}
+function init(){let d=today();$('todayDate').textContent=new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'short'});$('hello').textContent=['A little progress blooms 🌱','One step at a time 🌷','You are building your future ✨'][new Date().getDate()%3];set('dDate',d);set('jDate',d);set('testDate',d);set('expenseDate',d);loadDaily();renderAll()}
+init();
+
+// Bloom 2.0 — expanded data model and tools
+db.sessions=db.sessions||[];db.revisions=db.revisions||[];db.timeBlocks=db.timeBlocks||[];
+db.goals=db.goals||{daily:3,weekly:20,questions:300,revision:8};
+const localISO=(d)=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+function addSession(){
+ const minutes=+val('ssMinutes'),chapter=val('ssChapter').trim();
+ if(!minutes||minutes<1)return toast('Enter a valid duration');
+ db.sessions.push({id:Date.now(),date:val('ssDate')||today(),subject:val('ssSubject'),type:val('ssType'),minutes,chapter,notes:val('ssNotes')});
+ persist();set('ssChapter','');set('ssNotes','');renderAdvanced();toast('Session saved ✨');
+}
+function renderSessions(){
+ const month=today().slice(0,7),a=db.sessions.filter(x=>x.date.startsWith(month)),types=['Lecture','Question practice','Revision','Test analysis','Notes'];
+ const mins=t=>sum(a.filter(x=>x.type===t).map(x=>x.minutes));
+ $('ssTotal').textContent=(sum(a.map(x=>x.minutes))/60).toFixed(1)+'h';
+ $('ssPractice').textContent=(mins('Question practice')/60).toFixed(1)+'h';
+ $('ssLecture').textContent=(mins('Lecture')/60).toFixed(1)+'h';
+ $('sessionMix').innerHTML=types.map(t=>{let m=mins(t);return `<div class="row" style="margin:9px 0"><span>${t}</span><b>${(m/60).toFixed(1)}h</b></div><div class="progress"><span style="width:${sum(a.map(x=>x.minutes))?m/sum(a.map(x=>x.minutes))*100:0}%"></span></div>`}).join('');
+ $('sessionList').innerHTML=db.sessions.length?db.sessions.slice().reverse().slice(0,40).map(x=>`<div class="item"><div class="grow"><b>${esc(x.chapter||x.type)}</b><small>${dateLabel(x.date)} · ${x.subject} · ${x.type} · ${x.minutes} min</small>${x.notes?`<small>${esc(x.notes)}</small>`:''}</div><button class="iconbtn" onclick="deleteAdvanced('sessions',${x.id})">×</button></div>`).join(''):'<div class="empty">No sessions logged yet.</div>';
+}
+function addRevision(){
+ const name=val('rvName').trim();if(!name)return toast('Enter a topic name');
+ db.revisions.push({id:Date.now(),name,subject:val('rvSubject'),last:val('rvDate')||today(),confidence:+val('rvConfidence'),step:0,done:false});
+ persist();set('rvName','');renderAdvanced();toast('Revision plan added 🔁');
+}
+function dayDiff(a,b){return Math.floor((new Date(b+'T12:00:00')-new Date(a+'T12:00:00'))/86400000)}
+function revisionDueDate(r){return new Date(new Date(r.last+'T12:00:00').getTime()+[1,3,7,14,30][Math.min(r.step,4)]*86400000)}
+function renderRevision(){
+ let due=db.revisions.filter(r=>!r.done&&localISO(revisionDueDate(r))<=today());
+ $('revisionDue').innerHTML=due.length?due.map(r=>`<div class="item revision-due"><div class="grow"><b>${esc(r.name)}</b><small>${r.subject} · due ${dateLabel(localISO(revisionDueDate(r)))}</small></div><button class="btn primary" onclick="completeRevision(${r.id})">Reviewed</button></div>`).join(''):'<div class="empty">Nothing due right now. Add topics as you finish studying them.</div>';
+ $('revisionList').innerHTML=db.revisions.length?db.revisions.slice().reverse().map(r=>`<div class="item"><div class="grow"><b>${esc(r.name)}</b><small>${r.subject} · ${r.done?'Sequence complete':`Next review: ${dateLabel(localISO(revisionDueDate(r)))}`} · confidence ${r.confidence}/5</small></div>${!r.done?`<button class="btn soft" onclick="completeRevision(${r.id})">Reviewed</button>`:''}<button class="iconbtn" onclick="deleteAdvanced('revisions',${r.id})">×</button></div>`).join(''):'<div class="empty">Your revision queue will appear here.</div>';
+}
+function completeRevision(id){let r=db.revisions.find(x=>x.id===id);if(!r)return;r.last=today();r.step++;if(r.step>=5)r.done=true;persist();renderAdvanced();toast(r.done?'Revision sequence completed 🎉':'Next review scheduled')}
+function saveGoals(){db.goals={daily:+val('goalDaily')||3,weekly:+val('goalWeekly')||20,questions:+val('goalQuestions')||0,revision:+val('goalRevision')||0};persist();renderAdvanced();toast('Targets saved')}
+function renderGoals(){
+ ['goalDaily','goalWeekly','goalQuestions','goalRevision'].forEach((id,i)=>set(id,[db.goals.daily,db.goals.weekly,db.goals.questions,db.goals.revision][i]));
+ let now=new Date(),dow=(now.getDay()+6)%7,start=new Date(now);start.setDate(now.getDate()-dow);let week=Array.from({length:7},(_,i)=>{let d=new Date(start);d.setDate(start.getDate()+i);return localISO(d)});
+ let weekHours=sum(week.map(k=>dailyTotal(db.daily[k]||{})))+sum(db.sessions.filter(s=>week.includes(s.date)).map(s=>s.minutes/60));
+ let q=sum(week.map(k=>+(db.daily[k]?.questions||0)));
+ $('goalProgress').innerHTML=`<div class="row"><span>Study time</span><b>${weekHours.toFixed(1)} / ${db.goals.weekly}h</b></div><div class="progress"><span style="width:${Math.min(100,weekHours/db.goals.weekly*100)}%"></span></div><div class="row"><span>Question practice logged</span><b>${q} this week</b></div><p class="muted tiny">Question target is monthly. Daily logs are used here for the weekly snapshot.</p>`;
+ let completed=db.chapters.filter(c=>c.status==='Completed').length;
+ $('milestones').innerHTML=[['🌱','First 10 study sessions',db.sessions.length>=10,`${db.sessions.length}/10`],['📘','Complete 5 chapters',completed>=5,`${completed}/5`],['🎯','Log 5 tests',db.tests.length>=5,`${db.tests.length}/5`],['🔁','Finish a revision sequence',db.revisions.some(r=>r.done),db.revisions.filter(r=>r.done).length+' completed']].map(x=>`<div class="item"><span>${x[0]}</span><div class="grow"><b>${x[1]}</b><small>${x[3]}</small></div><span class="tag">${x[2]?'Unlocked':'In progress'}</span></div>`).join('');
+}
+function renderInsights(){
+ let sessions=db.sessions.filter(s=>s.date>=localISO(new Date(Date.now()-6*86400000))),types=['Lecture','Question practice','Revision','Test analysis'];
+ let hours=t=>sum(sessions.filter(s=>s.type===t).map(s=>s.minutes))/60;
+ let allHours=sum(sessions.map(s=>s.minutes))/60,practice=hours('Question practice'),lecture=hours('Lecture');
+ $('insightStats').innerHTML=[['7-day tracked time',allHours.toFixed(1)+'h','From session logs'],['Question practice',practice.toFixed(1)+'h',allHours?Math.round(practice/allHours*100)+'% of tracked time':'No sessions yet'],['Lecture time',lecture.toFixed(1)+'h',allHours?Math.round(lecture/allHours*100)+'% of tracked time':'No sessions yet']].map(x=>`<div class="insight-card"><small class="muted">${x[0]}</small><strong>${x[1]}</strong><small class="muted">${x[2]}</small></div>`).join('');
+ let subjectHours=['Physics','Chemistry','Maths'].map(s=>({s,h:sum(sessions.filter(x=>x.subject===s).map(x=>x.minutes))/60}));
+ let max=Math.max(1,...subjectHours.map(x=>x.h));
+ $('subjectBalance').innerHTML=subjectHours.map(x=>`<div class="row" style="margin:10px 0"><b>${x.s}</b><span>${x.h.toFixed(1)}h</span></div><div class="progress"><span style="width:${x.h/max*100}%"></span></div>`).join('');
+ let msgs=[];
+ if(allHours===0)msgs.push('Start logging sessions to unlock useful study-pattern insights.');
+ else if(practice<lecture*.5)msgs.push('Your logged lecture time is much higher than question practice. Protect a dedicated problem-solving block after lectures.');
+ else msgs.push('Your question-practice time is showing up alongside lecture time. Keep reviewing mistakes, not just counting attempts.');
+ let pending=db.tasks.filter(t=>!t.done).length;if(pending>8)msgs.push(`You have ${pending} pending tasks. Pick the three most important instead of trying to clear everything at once.`);
+ let weak=db.chapters.filter(c=>c.status!=='Completed'&&(+c.confidence||3)<=2);if(weak.length)msgs.push(`${weak.length} unfinished chapters have confidence 1–2. Choose one and work on its next action.`);
+ let noRev=db.revisions.filter(r=>!r.done&&localISO(revisionDueDate(r))<=today()).length;if(noRev)msgs.push(`${noRev} revision topic(s) are due. Clear one short revision before adding new material.`);
+ let latest=db.tests.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''))[0];if(latest)msgs.push(`Latest test: ${latest.name||latest.subject}, ${latest.score}/${latest.max} (${latest.max?Math.round(latest.score/latest.max*100):0}%). Review the error pattern you recorded.`);
+ $('insightList').innerHTML=msgs.map(m=>`<div class="item"><span>💡</span><div class="grow">${esc(m)}</div></div>`).join('');
+}
+function addBlock(){let name=val('tbName').trim(),start=val('tbStart'),end=val('tbEnd');if(!name||!start||!end||end<=start)return toast('Enter a name and a valid time range');db.timeBlocks.push({id:Date.now(),day:val('tbDay'),name,start,end,cat:val('tbCat')});persist();set('tbName','');renderAdvanced();toast('Time block added')}
+function renderTimetable(){let days=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];$('timetableGrid').innerHTML=days.map(d=>{let a=db.timeBlocks.filter(x=>x.day===d).sort((x,y)=>x.start.localeCompare(y.start));return `<div class="daygroup"><b>${d}</b><div class="list" style="margin-top:8px">${a.length?a.map(x=>`<div class="item"><span>🕒</span><div class="grow"><b>${esc(x.name)}</b><small>${x.start}–${x.end} · ${x.cat}</small></div><button class="iconbtn" onclick="deleteAdvanced('timeBlocks',${x.id})">×</button></div>`).join(''):'<small class="muted">No blocks planned.</small>'}</div></div>`}).join('')}
+function deleteAdvanced(key,id){if(!confirm('Delete this item?'))return;db[key]=db[key].filter(x=>x.id!==id);persist();renderAdvanced()}
+function renderAdvanced(){renderSessions();renderRevision();renderGoals();renderInsights();renderTimetable()}
+const oldRenderAll=renderAll;
+renderAll=function(){oldRenderAll();renderAdvanced()};
+const oldInit=init;
+init=function(){oldInit();set('ssDate',today());set('rvDate',today());renderAdvanced()};
+init();
+// PWA installation (available when served securely over HTTPS or localhost)
+let deferredInstall=null;
+const installBtn=$('installBtn');
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e;installBtn.hidden=false;});
+installBtn?.addEventListener('click',async()=>{if(!deferredInstall)return;deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null;installBtn.hidden=true;});
+window.addEventListener('appinstalled',()=>{installBtn.hidden=true;toast('Bloom installed successfully 🌷');});
+if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost')){
+ window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+}
+</script>
+</body>
+</html>

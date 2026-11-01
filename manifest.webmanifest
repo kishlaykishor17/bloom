@@ -1,0 +1,26 @@
+{
+  "id": "./",
+  "name": "Bloom 2.0 \u2014 JEE Command Centre",
+  "short_name": "Bloom 2.0",
+  "description": "A pastel JEE study and life command centre.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f7f5fb",
+  "theme_color": "#f6f0ff",
+  "icons": [
+    {
+      "src": "bloom-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "bloom-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
